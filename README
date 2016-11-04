@@ -1,0 +1,10 @@
+Random player works by pressing r once the gui of the game has started.
+
+Make sure you install the following in order for everything to work:
+
+Install Xcode from AppStore (if on a mac, just the command line tools
+for Xcode works as well)
+pip install pyobjc-core
+pip install pyobjc-framework-Quartz
+pip install image
+pip install pyautogui
