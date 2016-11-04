@@ -1,10 +1,4 @@
 Random player works by pressing r once the gui of the game has started.
+Alpha Beta player works by pressing b once the gui of the game has started.
 
-Make sure you install the following in order for everything to work:
-
-Install Xcode from AppStore (if on a mac, just the command line tools
-for Xcode works as well)
-pip install pyobjc-core
-pip install pyobjc-framework-Quartz
-pip install image
-pip install pyautogui
+If you have python 2.5 you might get an error with TKinter. just modify the import call from tkinter to Tkinter
