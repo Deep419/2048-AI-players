@@ -3,7 +3,7 @@ from logic import *
 from alphaBetaAi import *
 from numpy import random
 from datetime import datetime
-
+from Minimax import *
 SIZE = 500
 GRID_LEN = 4
 GRID_PADDING = 10
@@ -90,6 +90,8 @@ class GameGrid(Frame):
             self.randomPlayer()
         if key in "'b'":
             self.alphaBeta()
+        if key in "'m'":
+            self.minimax()
         if key in self.commands:
             self.makeMove(key)
             self.gameOver()
@@ -139,5 +141,10 @@ class GameGrid(Frame):
             move = player.getMove(self.matrix)
             self.makeMove(move)
 
+    def minimax(self):
+        player = minimaxPlayer()
+        while not self.gameOver():
+            move=player.getMove(self.matrix)
+            self.makeMove(move)
 gamegrid = GameGrid()
 

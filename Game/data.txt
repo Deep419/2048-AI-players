@@ -46,3 +46,4 @@
 {'score': 164, 'maxTile': 64, 'time': '0:00:05.014817', 'win': False, 'moves': 85}
 {'score': 222, 'time': '0:00:03.162390', 'moves': 119, 'maxTile': 64, 'win': False}
 {'maxTile': 64, 'time': '0:00:02.829251', 'score': 194, 'win': False, 'moves': 96}
+{'maxTile': 32, 'win': False, 'score': 130, 'moves': 60, 'time': '0:00:10.510000'}
