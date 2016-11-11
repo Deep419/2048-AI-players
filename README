@@ -2,3 +2,8 @@ Random player works by pressing r once the gui of the game has started.
 Alpha Beta player works by pressing b once the gui of the game has started.
 
 If you have python 2.5 you might get an error with TKinter. just modify the import call from tkinter to Tkinter
+
+
+Need Help on ExpectiMax.py
+http://iamkush.me/an-artificial-intelligence-for-the-2048-game/
+that's my source for the pseudo code.
