@@ -1,4 +1,4 @@
-from tkinter import *
+from Tkinter import *
 from logic import *
 from alphaBetaAi import *
 from numpy import random
