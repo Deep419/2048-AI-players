@@ -1,10 +1,12 @@
-from Tkinter import *
+from tkinter import *
 from logic import *
 from alphaBetaAi import *
-from numpy import random
+import random as ran
 from datetime import datetime
 from Minimax import *
 from expectiMax import *
+import time
+
 SIZE = 500
 GRID_LEN = 4
 GRID_PADDING = 10
@@ -34,13 +36,13 @@ KEY_RIGHT = "'d'"
 data = {"time":0,"currTime":0,"score":0,"moves":0,"maxTile":0,"win?":False}
 
 class GameGrid(Frame):
-    def __init__(self):
+    def __init__(self,times,type):
         Frame.__init__(self)
 
         self.grid()
         self.master.title('2048')
         self.master.bind("<Key>", self.key_down)
-
+        self.type = type
         # self.gamelogic = gamelogic
         self.commands = {KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right,
                          KEY_UP_ALT: up, KEY_DOWN_ALT: down, KEY_LEFT_ALT: left, KEY_RIGHT_ALT: right}
@@ -50,6 +52,8 @@ class GameGrid(Frame):
         self.init_matrix()
         self.update_grid_cells()
         self.time = datetime.now()
+        self.times = times
+        self.playTimes()
         self.mainloop()
     def init_grid(self):
         background = Frame(self, bg=BACKGROUND_COLOR_GAME, width=SIZE, height=SIZE)
@@ -108,10 +112,14 @@ class GameGrid(Frame):
         if game_state(self.matrix) == 'win':
             self.grid_cells[1][1].configure(text="You", bg=BACKGROUND_COLOR_CELL_EMPTY)
             self.grid_cells[1][2].configure(text="Win!", bg=BACKGROUND_COLOR_CELL_EMPTY)
+            self.update()
+            time.sleep(1)
             return True
         if game_state(self.matrix) == 'lose':
             self.grid_cells[1][1].configure(text="You", bg=BACKGROUND_COLOR_CELL_EMPTY)
             self.grid_cells[1][2].configure(text="Lose!", bg=BACKGROUND_COLOR_CELL_EMPTY)
+            self.update()
+            time.sleep(1)
             return True
         return False
     def generate_next(self):
@@ -127,14 +135,14 @@ class GameGrid(Frame):
             self.matrix = add_two(self.matrix)
             self.update_grid_cells()
             self.update()
-            
+
 # this is a random ai player.
     def randomPlayer(self):
         while game_state(self.matrix) != 'lose':
             data["moves"] += 1
             data["maxTile"] = max_tile(self.matrix)
             data["score"] = score(self.matrix)
-            char = random.choice([KEY_UP, KEY_RIGHT, KEY_LEFT, KEY_DOWN])
+            char = ran.choice([KEY_UP, KEY_RIGHT, KEY_LEFT, KEY_DOWN])
             self.makeMove(char)
             time = datetime.now() - self.time
             data["time"] = str(time)
@@ -187,4 +195,37 @@ class GameGrid(Frame):
         data["time"] = str(time)
         with open("expectimaxResults.txt", "a") as myfile:
             myfile.write(str(data)+'\n')
-gamegrid = GameGrid()
+
+    def quit(self):
+        self.destroy()
+
+    def resetBoard(self):
+        print("game is resetting board")
+        self.init_matrix()
+        self.update_grid_cells()
+    def playTimes(self):
+
+        while self.times >0:
+            if self.type in "'r'":
+                self.randomPlayer()
+
+            if self.type in "'b'":
+                self.alphaBeta()
+
+            if self.type in "'m'":
+                self.minimax()
+
+            if self.type in "'e'":
+                self.expect()
+
+            if self.gameOver():
+                self.times -= 1
+                self.resetBoard()
+        if self.times ==0:
+            quit()
+
+algotype="'r'"
+gamegrid=GameGrid(2,algotype)
+
+def quit():
+    gamegrid.destroy()
