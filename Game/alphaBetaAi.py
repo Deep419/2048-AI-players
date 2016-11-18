@@ -32,6 +32,7 @@ class alphaBetaPlayer():
                     cells.append([row,column])
         return cells
     def evalfn(self, grid):
+        '''
         cell = self.getAvailableCells(grid)
         maxTiles = self.getMaxTiles(grid)
         maxSum = sum(maxTiles)
@@ -99,6 +100,51 @@ class alphaBetaPlayer():
         # # print "monotonic: %d" % monotonic
         #
         # return cell_score + empty*32 + adjacent*4 + max(snakes)*9 + monotonic
+        '''
+
+        cell = self.getAvailableCells(grid)
+        maxTiles = self.getMaxTiles(grid)
+        maxSum = sum(maxTiles)
+        # evalScore = len(cell) * 10 + maxSum * 0.8+maxTiles[4]*5
+        evalScore = len(cell) * 10 + maxSum * 0.8 + maxTiles[4]  # * 2
+        # return (evalScore)
+
+        ###
+        scoreTotal = score(grid)
+
+        # cluster
+        clusteringScore = 0
+        neighbours = [-1, 0, 1]
+        i = 0
+        for row in grid:
+            j = 0
+            for cell in row:
+                if cell == 0:
+                    continue
+                numOfNeighbours = 0
+                summ = 0
+                for k in neighbours:
+                    x = i + k
+                    if x < 0 or x >= 4:  # 4 is total number of rows or columns
+                        continue
+                    for l in neighbours:
+                        y = j + 1
+                        if y < 0 or y >= 4:
+                            continue
+
+                        if grid[x][y] > 0:
+                            numOfNeighbours += 1
+                            summ += int(math.fabs(grid[i][j] - grid[x][y]))
+
+                # print "sum, num",sum,numOfNeighbours
+                if not summ == 0:
+                    clusteringScore += summ / numOfNeighbours
+                j += 1
+            i += 1
+
+        val = int(scoreTotal + (math.log(scoreTotal) * len(self.getAvailableCells(grid))) - clusteringScore)
+        # print "max, eval",max(val,min(score, 1)),evalScore
+        return max(val, min(score, 1)) + evalScore
 
     def getNewTileValue(self):
         if randint(0, 99) < 100 * 0.9:
@@ -115,6 +161,7 @@ class alphaBetaPlayer():
                 moves.append(dir)
         return moves
 
+    '''
     def alphabeta(self, grid, depth, alpha, beta, maximizingPlayer):
         if depth == 0:
             e = self.evalfn(grid)
@@ -148,12 +195,74 @@ class alphaBetaPlayer():
             beta = min(beta, r[0])
             result = [beta, r[1]]
             return result
+    '''
+    def alphabeta(self,grid,depth,a,b,maximizingPlayer):
+
+        if depth == 0:
+            e = self.evalfn(grid)
+            return [e, 1]
+        if maximizingPlayer:
+            bestValue = -float('inf')
+            moves = self.getAvailableMoves(grid)
+            flag=False
+            if moves == []:
+                return [self.evalfn(grid), 1]
+            for move in moves:
+                tmpGrid = copy.deepcopy(grid)
+                tmpGrid,done=makeMove(tmpGrid,move)
+                val = self.alphabeta(tmpGrid,depth-1,a,b,False)
+                tmp=move
+                if val[0] > a:
+                    flag=True
+                    bestMove = move
+                    a=val[0]
+                if b<=a:
+                    break
+                a=max(a,bestValue)
+            if flag:
+                return [a,bestMove]
+            return [a,tmp]
+
+        else:
+            cells = self.getAvailableCells(grid)
+            if cells == []:
+                return [self.evalfn(grid), "'w'"]
+            tiles=[2,4]
+            flag = False
+            flag2= False
+            for cell in cells:
+                for tile in tiles:
+                    tmpGrid = copy.deepcopy(grid)
+                    tmpGrid[cell[0]][cell[1]]=tile
+                    val = self.alphabeta(tmpGrid, depth - 1,a,b,True)
+                    tmp=val[1]
+                    if val[0] < b:
+                        flag2=True
+                        direc = val[1]
+                        b=val[0]
+                    if b<=a:
+                        flag=True
+                        break
+                if flag:
+                    break
+            if flag2:
+                return [b,direc]
+            return [b,tmp]
 
 
     def getMove(self, grid):
+        '''
         moves = self.getAvailableMoves(grid)
         print(moves)
         result = self.alphabeta(grid, 12, -float('inf'), float('inf'), True)
         print("Expected Score",result[0])
         print("Direction",result[1])
+        return result[1]
+        '''
+
+        moves = self.getAvailableMoves(grid)
+        #print(moves)
+        result = self.alphabeta(grid, 4, -float('inf'), float('inf'), True)
+        #print("Expected Score",result[0])
+        #print("Direction",result[1])
         return result[1]

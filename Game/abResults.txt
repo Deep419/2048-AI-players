@@ -1,0 +1,1 @@
+{'win': False, 'Depth': 4, 'score': 1720, 'time': '0:01:22.107000', 'maxTile': 1024, 'moves': 776}

@@ -4,6 +4,7 @@ from alphaBetaAi import *
 from numpy import random
 from datetime import datetime
 from Minimax import *
+from expectiMax import *
 SIZE = 500
 GRID_LEN = 4
 GRID_PADDING = 10
@@ -30,7 +31,7 @@ KEY_LEFT = "'a'"
 KEY_RIGHT = "'d'"
 
 
-data = {"score":0,"moves":0,"maxTile":0,"time":0,"win":False}
+data = {"time":0,"currTime":0,"Depth":4,"score":0,"moves":0,"maxTile":0,"win":False}
 
 class GameGrid(Frame):
     def __init__(self):
@@ -88,10 +89,16 @@ class GameGrid(Frame):
         key = repr(event.char)
         if key in "'r'":
             self.randomPlayer()
+
         if key in "'b'":
             self.alphaBeta()
+
         if key in "'m'":
             self.minimax()
+
+        if key in "'e'":
+            self.expect()
+
         if key in self.commands:
             self.makeMove(key)
             self.gameOver()
@@ -138,13 +145,46 @@ class GameGrid(Frame):
     def alphaBeta(self):
         player = alphaBetaPlayer()
         while not self.gameOver():
-            move = player.getMove(self.matrix)
+            data["moves"] += 1
+            move=player.getMove(self.matrix)
             self.makeMove(move)
+        if game_state(self.matrix) == 'win':
+            data["win"] = True
+        data["maxTile"] = max_tile(self.matrix)
+        data["score"] = score(self.matrix)
+        time = datetime.now() - self.time
+        data["time"] = str(time)
+        with open("abResults.txt", "a") as myfile:
+            myfile.write(str(data)+'\n')
 
     def minimax(self):
         player = minimaxPlayer()
         while not self.gameOver():
+            data["moves"] += 1
             move=player.getMove(self.matrix)
             self.makeMove(move)
-gamegrid = GameGrid()
+        if game_state(self.matrix) == 'win':
+            data["win"] = True
+        data["maxTile"] = max_tile(self.matrix)
+        data["score"] = score(self.matrix)
+        time = datetime.now() - self.time
+        data["time"] = str(time)
+        with open("minimaxResults.txt", "a") as myfile:
+            myfile.write(str(data)+'\n')
 
+    def expect(self):
+        player= expectiMaxPlayer()
+        data["currTime"]=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        while not self.gameOver():
+            data["moves"] += 1
+            move=player.getMove(self.matrix)
+            self.makeMove(move)
+        if game_state(self.matrix) == 'win':
+            data["win"] = True
+        data["maxTile"] = max_tile(self.matrix)
+        data["score"] = score(self.matrix)
+        time = datetime.now() - self.time
+        data["time"] = str(time)
+        with open("expectimaxResults.txt", "a") as myfile:
+            myfile.write(str(data)+'\n')
+gamegrid = GameGrid()
