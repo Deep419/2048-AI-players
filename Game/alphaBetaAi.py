@@ -160,7 +160,6 @@ class alphaBetaPlayer():
             if done:
                 moves.append(dir)
         return moves
-
     '''
     def alphabeta(self, grid, depth, alpha, beta, maximizingPlayer):
         if depth == 0:

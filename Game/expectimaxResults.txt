@@ -34,3 +34,8 @@
 {'moves': 701, 'win': False, 'Depth': 4, 'score': 1536, 'time': '0:02:39.142000', 'maxTile': [1024, 256, 64], 'currTime': '2016-11-18 11:17:36'}
 {'moves': 633, 'win': False, 'Depth': 4, 'score': 1424, 'time': '0:02:52.378000', 'maxTile': [1024, 128, 64], 'currTime': '2016-11-18 11:21:10'}
 {'moves': 412, 'win': False, 'Depth': 4, 'score': 904, 'time': '0:00:20.711000', 'maxTile': [512, 128, 64], 'currTime': '2016-11-18 11:24:59'}
+{'score': 1920, 'time': '0:00:46.209902', 'moves': 870, 'Depth': 4, 'maxTile': [1024, 512, 128], 'currTime': '2016-11-18 12:49:08', 'win': False}
+{'moves': 1015, 'maxTile': [2048, 128, 16], 'Depth': 4, 'currTime': '2016-11-18 12:51:21', 'time': '0:00:55.071301', 'score': 2232, 'win': True}
+{'maxTile': [2048, 32, 8], 'score': 2146, 'win': True, 'moves': 955, 'currTime': '2016-11-18 12:52:22', 'time': '0:00:41.609093', 'Depth': 4}
+{'win': False, 'Depth': 4, 'score': 642, 'maxTile': [256, 128, 64], 'moves': 295, 'time': '0:00:15.223063', 'currTime': '2016-11-18 12:53:32'}
+{'time': '0:00:16.804757', 'moves': 326, 'maxTile': [256, 128, 64], 'Depth': 4, 'currTime': '2016-11-18 12:53:53', 'win': False, 'score': 738}

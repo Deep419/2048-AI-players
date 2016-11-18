@@ -1,0 +1,6 @@
+
+*.save
+
+.idea/
+
+Game/__pycache__

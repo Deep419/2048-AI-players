@@ -129,7 +129,7 @@ class expectiMaxPlayer():
 
         val = int(scoreTotal + (math.log(scoreTotal) * len(self.getAvailableCells(grid))) - clusteringScore)
         # print "max, eval",max(val,min(score, 1)),evalScore
-        e1=max(val, min(score, 1))
+        e1= max(val, min(scoreTotal, 1))
         #print "e1, e2", e1,e2
         return  e1 + e2
 
@@ -232,7 +232,7 @@ class expectiMaxPlayer():
         return result[1]
         '''
 
-        result = self.expectiMax(grid, 3, True)
+        result = self.expectiMax(grid, 4, True)
         #print("Expected Score",result[0])
         #print("Direction",result[1])
         return result[1]
