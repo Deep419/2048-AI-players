@@ -31,7 +31,7 @@ KEY_LEFT = "'a'"
 KEY_RIGHT = "'d'"
 
 
-data = {"time":0,"currTime":0,"Depth":4,"score":0,"moves":0,"maxTile":0,"win":False}
+data = {"time":0,"currTime":0,"score":0,"moves":0,"maxTile":0,"win?":False}
 
 class GameGrid(Frame):
     def __init__(self):
@@ -180,7 +180,7 @@ class GameGrid(Frame):
             move=player.getMove(self.matrix)
             self.makeMove(move)
         if game_state(self.matrix) == 'win':
-            data["win"] = True
+            data["win?"] = True
         data["maxTile"] = max_tile(self.matrix)
         data["score"] = score(self.matrix)
         time = datetime.now() - self.time

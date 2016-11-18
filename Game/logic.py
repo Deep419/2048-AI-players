@@ -54,21 +54,12 @@ def add_two(mat):
 ##Author: Eva Yang
 def max_tile(mat):
     max=0
-    limit=0
-    maxTilesList=[]
-    for i in range(3):
-        if limit==0:
-            limit = 2049
-        else:
-            limit = max
-            max=0
-        for rows in mat:
-            row = rows
-            for tile in range(len(row)):
-                if row[tile]>max and row[tile]<limit:
-                    max=row[tile]
-        maxTilesList.append(max)
-    return maxTilesList
+    for rows in mat:
+        row = rows
+        for tile in range(len(row)):
+            if row[tile]>max:
+                max=row[tile]
+    return max
 
 ##Find score
 ##Author: Eva Yang

@@ -232,7 +232,7 @@ class expectiMaxPlayer():
         return result[1]
         '''
 
-        result = self.expectiMax(grid, 4, True)
+        result = self.expectiMax(grid, 3, True)
         #print("Expected Score",result[0])
         #print("Direction",result[1])
         return result[1]
