@@ -1,4 +1,4 @@
-from tkinter import *
+from Tkinter import *
 from logic import *
 from alphaBetaAi import *
 import random as ran
@@ -33,7 +33,7 @@ KEY_LEFT = "'a'"
 KEY_RIGHT = "'d'"
 
 
-data = {"time":0,"currTime":0,"score":0,"moves":0,"maxTile":0,"win?":False}
+data = {"timeTaken":0,"startTime":0,"score":0,"moves":0,"maxTile":0,"win?":0,"statesScanned":0}
 
 class GameGrid(Frame):
     def __init__(self,times,type):
@@ -74,7 +74,7 @@ class GameGrid(Frame):
         return randint(0, GRID_LEN - 1)
     def init_matrix(self):
         self.matrix = new_game(4)
-
+        self.time = datetime.now()
         self.matrix = add_two(self.matrix)
         self.matrix = add_two(self.matrix)
 
@@ -136,7 +136,7 @@ class GameGrid(Frame):
             self.update_grid_cells()
             self.update()
 
-# this is a random ai player.
+    # Random Moves Player
     def randomPlayer(self):
         while game_state(self.matrix) != 'lose':
             data["moves"] += 1
@@ -145,54 +145,62 @@ class GameGrid(Frame):
             char = ran.choice([KEY_UP, KEY_RIGHT, KEY_LEFT, KEY_DOWN])
             self.makeMove(char)
             time = datetime.now() - self.time
-            data["time"] = str(time)
+            data["timeTaken"] = str(time)
         with open("data.txt", "a") as myfile:
             myfile.write(str(data)+'\n')
         self.gameOver()
 
+    # Alpha-Beta Player
     def alphaBeta(self):
         player = alphaBetaPlayer()
+        data["startTime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         while not self.gameOver():
             data["moves"] += 1
             move=player.getMove(self.matrix)
             self.makeMove(move)
         if game_state(self.matrix) == 'win':
-            data["win"] = True
+            data["win?"] = 1
         data["maxTile"] = max_tile(self.matrix)
         data["score"] = score(self.matrix)
         time = datetime.now() - self.time
-        data["time"] = str(time)
+        data["timeTaken"] = str(time)
+        data["statesScanned"] = alphaBetaPlayer.statesScanned
         with open("abResults.txt", "a") as myfile:
             myfile.write(str(data)+'\n')
 
+    # Minimax Player
     def minimax(self):
         player = minimaxPlayer()
+        data["startTime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         while not self.gameOver():
             data["moves"] += 1
             move=player.getMove(self.matrix)
             self.makeMove(move)
         if game_state(self.matrix) == 'win':
-            data["win"] = True
+            data["win?"] = 1
         data["maxTile"] = max_tile(self.matrix)
         data["score"] = score(self.matrix)
         time = datetime.now() - self.time
-        data["time"] = str(time)
+        data["timeTaken"] = str(time)
+        data["statesScanned"]=minimaxPlayer.statesScanned
         with open("minimaxResults.txt", "a") as myfile:
             myfile.write(str(data)+'\n')
 
+    # Expectimax Player
     def expect(self):
         player= expectiMaxPlayer()
-        data["currTime"]=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data["startTime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         while not self.gameOver():
             data["moves"] += 1
             move=player.getMove(self.matrix)
             self.makeMove(move)
         if game_state(self.matrix) == 'win':
-            data["win?"] = True
+            data["win?"] = 1
         data["maxTile"] = max_tile(self.matrix)
         data["score"] = score(self.matrix)
         time = datetime.now() - self.time
-        data["time"] = str(time)
+        data["timeTaken"] = str(time)
+        data["statesScanned"] = expectiMaxPlayer.statesScanned
         with open("expectimaxResults.txt", "a") as myfile:
             myfile.write(str(data)+'\n')
 
@@ -200,7 +208,20 @@ class GameGrid(Frame):
         self.destroy()
 
     def resetBoard(self):
+        # print " ", minimaxPlayer.nodesVisited, minimaxPlayer.evalCalls
+        # minimaxPlayer.nodesVisited =0
+        # minimaxPlayer.evalCalls=0
+        #print "Min ,Alpha ,Expec ", minimaxPlayer.statesScanned,alphaBetaPlayer.statesScanned, expectiMaxPlayer.statesScanned
         print("game is resetting board")
+        minimaxPlayer.statesScanned=0
+        alphaBetaPlayer.statesScanned = 0
+        expectiMaxPlayer.statesScanned=0
+        data["timeTaken"]=0
+        data["maxTile"]=0
+        data["startTime"]=0
+        data["score"]=0
+        data["moves"]=0
+        data["win?"]=0
         self.init_matrix()
         self.update_grid_cells()
     def playTimes(self):
@@ -224,8 +245,8 @@ class GameGrid(Frame):
         if self.times ==0:
             quit()
 
-algotype="'r'"
-gamegrid=GameGrid(2,algotype)
+algotype="'e'"         #change to either 'b' or 'm' or 'e'
+gamegrid=GameGrid(100,algotype)   #change to number of rounds
 
 def quit():
     gamegrid.destroy()

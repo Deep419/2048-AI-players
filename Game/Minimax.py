@@ -5,9 +5,12 @@ import copy
 import math
 sys.setrecursionlimit(4000)
 
+
 class minimaxPlayer():
+    statesScanned=0
     def _init_(self):
         self.bestMove ="stop"
+
 
     def getMaxTiles(self, grid):
         maxTile = 0
@@ -33,7 +36,7 @@ class minimaxPlayer():
 
 
     def evalfn(self, grid):
-
+        '''
         cell = self.getAvailableCells(grid)
         maxTiles = self.getMaxTiles(grid)
         maxSum = sum(maxTiles)
@@ -78,8 +81,22 @@ class minimaxPlayer():
         val = int(scoreTotal + (math.log(scoreTotal) * len(self.getAvailableCells(grid))) - clusteringScore)
         #print "max, eval",max(val,min(score, 1)),evalScore
         return max(val,min(score, 1))+evalScore
-
-    ###
+        '''
+        W = [[[10, 9, 7.6, 7.4],
+              [7.4, 6.4, 5.7, 5.3],
+              [4.5, 4.1, 2.7, 1.2],
+              [0.09, 0.07, 0.04, 0.02]], ]
+        max_score = 0
+        for W_matrix in W:
+            # print "w_matrix",W_matrix
+            temp = 0
+            for r in range(4):
+                for c in range(4):
+                    temp += W_matrix[r][c] * grid[r][c]
+                    # temp += W[r][c] * grid[r][c]
+            if temp > max_score:
+                max_score = temp
+        return max_score
     def getNewTileValue(self):
         if randint(0, 99) < 100 * 0.9:
             return 2
@@ -102,6 +119,7 @@ class minimaxPlayer():
 
     #main minimax method
     def minimax(self,grid,depth,maximizingPlayer):
+        minimaxPlayer.statesScanned+=1
         if depth == 0:                          #if at required depth, return the hueristics value
             e = self.evalfn(grid)
             return [e, 1]                       #returns value and 2nd value doesnt matter
@@ -154,7 +172,7 @@ class minimaxPlayer():
     def getMove(self, grid):
         moves = self.getAvailableMoves(grid)
         #print(moves)
-        result = self.minimax(grid, 4, True)
+        result = self.minimax(grid, 3, True)
         #print("Expected Score",result[0])
         #print("Direction",result[1])
         return result[1]

@@ -1,3 +1,0 @@
-{'moves': 601, 'win?': False, 'score': 1326, 'time': '0:00:24.497000', 'maxTile': 512, 'currTime': '2016-11-18 13:45:08'}
-{'moves': 969, 'win?': False, 'score': 2138, 'time': '0:00:35.426000', 'maxTile': 1024, 'currTime': '2016-11-18 13:48:01'}
-{'moves': 837, 'win?': False, 'score': 1840, 'time': '0:00:33.527000', 'maxTile': 1024, 'currTime': '2016-11-18 13:49:54'}

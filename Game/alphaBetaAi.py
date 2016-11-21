@@ -7,6 +7,7 @@ import math
 sys.setrecursionlimit(4000)
 
 class alphaBetaPlayer():
+    statesScanned = 0
     def _init_(self):
         self.bestMove ="stop"
 
@@ -100,7 +101,6 @@ class alphaBetaPlayer():
         # # print "monotonic: %d" % monotonic
         #
         # return cell_score + empty*32 + adjacent*4 + max(snakes)*9 + monotonic
-        '''
 
         cell = self.getAvailableCells(grid)
         maxTiles = self.getMaxTiles(grid)
@@ -145,6 +145,22 @@ class alphaBetaPlayer():
         val = int(scoreTotal + (math.log(scoreTotal) * len(self.getAvailableCells(grid))) - clusteringScore)
         # print "max, eval",max(val,min(score, 1)),evalScore
         return max(val, min(score, 1)) + evalScore
+        '''
+        W = [[[10, 9, 7.6, 7.4],
+              [7.4, 6.4, 5.7, 5.3],
+              [4.5, 4.1, 2.7, 1.2],
+              [0.09, 0.07, 0.04, 0.02]], ]
+        max_score = 0
+        for W_matrix in W:
+            # print "w_matrix",W_matrix
+            temp = 0
+            for r in range(4):
+                for c in range(4):
+                    temp += W_matrix[r][c] * grid[r][c]
+                    # temp += W[r][c] * grid[r][c]
+            if temp > max_score:
+                max_score = temp
+        return max_score
 
     def getNewTileValue(self):
         if randint(0, 99) < 100 * 0.9:
@@ -196,7 +212,7 @@ class alphaBetaPlayer():
             return result
     '''
     def alphabeta(self,grid,depth,a,b,maximizingPlayer):
-
+        alphaBetaPlayer.statesScanned += 1
         if depth == 0:
             e = self.evalfn(grid)
             return [e, 1]
@@ -261,7 +277,7 @@ class alphaBetaPlayer():
 
         moves = self.getAvailableMoves(grid)
         #print(moves)
-        result = self.alphabeta(grid, 4, -float('inf'), float('inf'), True)
+        result = self.alphabeta(grid, 3, -float('inf'), float('inf'), True)
         #print("Expected Score",result[0])
         #print("Direction",result[1])
         return result[1]
