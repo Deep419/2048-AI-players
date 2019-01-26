@@ -1,0 +1,1 @@
+{'timeTaken': '0:00:23.756050', 'startTime': '2019-01-26 17:06:11', 'score': 2152, 'moves': 965, 'maxTile': 2048, 'win?': 1, 'statesScanned': 202115}
